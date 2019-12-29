@@ -72,6 +72,16 @@ $ composer require codesinging/support -vvv
 1. `upper($value)`
 1. `words($value, $words = 100, $end = '...')`
 
+### Repository
+
+1. `has(string $key)`
+1. `get($key, $default = null)`
+1. `getMany(array $keys)`
+1. `set($key, $value = null)`
+1. `prepend(string $key, $value)`
+1. `push(string $key, $value)`
+1. `all()`
+
 ## Contributing
 
 You can contribute in one of three ways:
