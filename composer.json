@@ -1,0 +1,19 @@
+{
+    "name": "codesinging/support",
+    "description": "Awesome support helpers for PHP web development.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "codesinging",
+            "email": "codesinging@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CodeSinging\\Support\\": "src"
+        }
+    }
+}
