@@ -10,12 +10,16 @@
     ],
     "require": {
         "php": ">=7.0",
-        "ext-mbstring": "*"
+        "ext-mbstring": "*",
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {
             "CodeSinging\\Support\\": "src"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "require-dev": {
         "phpunit/phpunit": "^6"

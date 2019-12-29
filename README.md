@@ -1,4 +1,4 @@
-Support Helpers
+# Support Helpers
 
 Awesome support helpers for PHP web development.
 
@@ -13,6 +13,10 @@ $ composer require codesinging/support -vvv
 ```
 
 ## Usage
+
+### helpers
+
+1. `load_config($file)`
 
 ### Arr
 
