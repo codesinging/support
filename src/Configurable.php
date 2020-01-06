@@ -18,13 +18,13 @@ class Configurable implements \ArrayAccess
     /**
      * Create a new fluent container instance.
      *
-     * @param array $configurations
+     * @param array $configs
      *
      * @return void
      */
-    public function __construct(array $configurations = [])
+    public function __construct(array $configs = [])
     {
-        $this->set($configurations);
+        $this->set($configs);
     }
 
     /**
