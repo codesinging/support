@@ -8,6 +8,11 @@ namespace CodeSinging\Support;
 
 use ArrayAccess;
 
+/**
+ * Class Repository
+ * @package CodeSinging\Support
+ * @copyright https://github.com/illuminate/config
+ */
 class Repository implements ArrayAccess
 {
     /**

@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 class RepositoryTest extends TestCase
 {
     /** @var Repository */
-    protected $repo;
+    protected $repository;
 
     /** @var array */
     protected $config = [
@@ -35,34 +35,34 @@ class RepositoryTest extends TestCase
 
     protected function setUp()
     {
-        $this->repo = new Repository($this->config);
+        $this->repository = new Repository($this->config);
     }
 
     public function testHas()
     {
-        self::assertTrue($this->repo->has('foo'));
-        self::assertTrue($this->repo->has('associate.x'));
-        self::assertTrue($this->repo->has('array.0'));
-        self::assertFalse($this->repo->has('not-exist'));
-        self::assertFalse($this->repo->has('associate.z'));
+        self::assertTrue($this->repository->has('foo'));
+        self::assertTrue($this->repository->has('associate.x'));
+        self::assertTrue($this->repository->has('array.0'));
+        self::assertFalse($this->repository->has('not-exist'));
+        self::assertFalse($this->repository->has('associate.z'));
     }
 
     public function testGet()
     {
-        self::assertEquals('bar', $this->repo->get('foo'));
-        self::assertEquals('xxx', $this->repo->get('associate.x'));
-        self::assertEquals('zzz', $this->repo->get('array.1'));
+        self::assertEquals('bar', $this->repository->get('foo'));
+        self::assertEquals('xxx', $this->repository->get('associate.x'));
+        self::assertEquals('zzz', $this->repository->get('array.1'));
 
-        self::assertEquals('default', $this->repo->get('not-exists', 'default'));
+        self::assertEquals('default', $this->repository->get('not-exists', 'default'));
     }
 
-    public function testGetMany()
+    public function testGetWithArrayOfKeys()
     {
-        self::assertSame([
+        $this->assertSame([
             'foo' => 'bar',
             'bar' => 'baz',
             'none' => null,
-        ], $this->repo->getMany([
+        ], $this->repository->get([
             'foo',
             'bar',
             'none',
@@ -73,7 +73,37 @@ class RepositoryTest extends TestCase
             'x.z' => 'zoo',
             'bar' => 'baz',
             'baz' => 'bat',
-        ], $this->repo->getMany([
+        ], $this->repository->get([
+            'x.y' => 'default',
+            'x.z' => 'default',
+            'bar' => 'default',
+            'baz',
+        ]));
+    }
+
+    public function testGetWithDefault()
+    {
+        $this->assertSame('default', $this->repository->get('not-exist', 'default'));
+    }
+
+    public function testGetMany()
+    {
+        self::assertSame([
+            'foo' => 'bar',
+            'bar' => 'baz',
+            'none' => null,
+        ], $this->repository->getMany([
+            'foo',
+            'bar',
+            'none',
+        ]));
+
+        $this->assertSame([
+            'x.y' => 'default',
+            'x.z' => 'zoo',
+            'bar' => 'baz',
+            'baz' => 'bat',
+        ], $this->repository->getMany([
             'x.y' => 'default',
             'x.z' => 'default',
             'bar' => 'default',
@@ -83,70 +113,73 @@ class RepositoryTest extends TestCase
 
     public function testSet()
     {
-        $this->repo->set('key', 'value');
-        $this->assertSame('value', $this->repo->get('key'));
+        $this->repository->set('key', 'value');
+        $this->assertSame('value', $this->repository->get('key'));
 
-        $this->repo->set('associate.z', 'zzz');
-        $this->assertSame('zzz', $this->repo->get('associate.z'));
+        $this->repository->set('associate.z', 'zzz');
+        $this->assertSame('zzz', $this->repository->get('associate.z'));
+    }
 
-        $this->repo->set([
+    public function testSetArray()
+    {
+        $this->repository->set([
             'key1' => 'value1',
             'key2' => 'value2',
         ]);
-        $this->assertSame('value1', $this->repo->get('key1'));
-        $this->assertSame('value2', $this->repo->get('key2'));
+        $this->assertSame('value1', $this->repository->get('key1'));
+        $this->assertSame('value2', $this->repository->get('key2'));
     }
 
     public function testPrepend()
     {
-        $this->repo->prepend('array', 'xxx');
-        $this->assertSame('xxx', $this->repo->get('array.0'));
+        $this->repository->prepend('array', 'xxx');
+        $this->assertSame('xxx', $this->repository->get('array.0'));
     }
 
     public function testPush()
     {
-        $this->repo->push('array', 'xxx');
-        $this->assertSame('xxx', $this->repo->get('array.2'));
+        $this->repository->push('array', 'xxx');
+        $this->assertSame('xxx', $this->repository->get('array.2'));
     }
 
     public function testAll()
     {
-        $this->assertSame($this->config, $this->repo->all());
+        $this->assertSame($this->config, $this->repository->all());
     }
 
     public function testOffsetExists()
     {
-        $this->assertTrue(isset($this->repo['foo']));
-        $this->assertFalse(isset($this->repo['not-exist']));
+        $this->assertTrue(isset($this->repository['foo']));
+        $this->assertFalse(isset($this->repository['not-exist']));
     }
 
     public function testOffsetGet()
     {
-        $this->assertNull($this->repo['not-exist']);
-        $this->assertSame('bar', $this->repo['foo']);
+        $this->assertNull($this->repository['not-exist']);
+        $this->assertSame('bar', $this->repository['foo']);
         $this->assertSame([
             'x' => 'xxx',
             'y' => 'yyy',
-        ], $this->repo['associate']);
+        ], $this->repository['associate']);
     }
 
     public function testOffsetSet()
     {
-        $this->assertNull($this->repo['key']);
+        $this->assertNull($this->repository['key']);
 
-        $this->repo['key'] = 'value';
+        $this->repository['key'] = 'value';
 
-        $this->assertSame('value', $this->repo['key']);
+        $this->assertSame('value', $this->repository['key']);
     }
 
     public function testOffsetUnset()
     {
-        $this->assertArrayHasKey('associate', $this->repo->all());
-        $this->assertSame($this->config['associate'], $this->repo->get('associate'));
+        $this->assertArrayHasKey('associate', $this->repository->all());
+        $this->assertSame($this->config['associate'], $this->repository->get('associate'));
 
-        unset($this->repo['associate']);
+        unset($this->repository['associate']);
 
-        $this->assertArrayHasKey('associate', $this->repo->all());
-        $this->assertNull($this->repo->get('associate'));
+        $this->assertArrayHasKey('associate', $this->repository->all());
+        $this->assertNull($this->repository->get('associate'));
     }
 }
