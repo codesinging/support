@@ -16,16 +16,16 @@ class ConfigurableTest extends TestCase
         $array = ['name' => 'Support', 'age' => 25];
         $config = new Configurable($array);
 
-        $this->assertEquals($array, $config->configs());
+        $this->assertEquals($array, $config->all());
     }
 
     public function testSet()
     {
         $config = new Configurable();
-        self::assertEquals([], $config->configs());
+        self::assertEquals([], $config->all());
 
         $config->set(['name' => 'Support'])->set('age', 25);
-        self::assertEquals(['name' => 'Support', 'age' => 25], $config->configs());
+        self::assertEquals(['name' => 'Support', 'age' => 25], $config->all());
     }
 
     public function testGet()
@@ -78,7 +78,7 @@ class ConfigurableTest extends TestCase
         $array = ['name' => 'Support', 'age' => 25];
         $config = new Configurable($array);
 
-        self::assertEquals($array, $config->configs());
+        self::assertEquals($array, $config->all());
     }
 
     public function testToArray()

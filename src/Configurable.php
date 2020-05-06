@@ -6,7 +6,10 @@
 
 namespace CodeSinging\Support;
 
-class Configurable implements \ArrayAccess
+use ArrayAccess;
+use JsonSerializable;
+
+class Configurable implements ArrayAccess, JsonSerializable
 {
     /**
      * All of the configurations set on the container.
@@ -59,7 +62,7 @@ class Configurable implements \ArrayAccess
             return $this->configs[$key];
         }
 
-        return $default;
+        return value($default);
     }
 
     /**
@@ -67,7 +70,7 @@ class Configurable implements \ArrayAccess
      *
      * @return array
      */
-    public function configs()
+    public function all()
     {
         return $this->configs;
     }
